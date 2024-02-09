@@ -1,13 +1,17 @@
 """Main flask app server module"""
 
 from flask import Flask
+from datetime import datetime
 
 flask_app = Flask(__name__)
 
 @flask_app.route("/")
 def home():
     """Home route"""
-    return {"message": "OK"}
+    return {
+        "message": "OK",
+        "timestamp": datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+    }
 
 
 if __name__ == "__main__":
