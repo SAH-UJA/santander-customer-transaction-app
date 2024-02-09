@@ -1,10 +1,10 @@
 from flask import Flask
 
-app = Flask(__name__)
+flask_app = Flask(__name__)
 
-@app.route("/")
+@flask_app.route("/")
 def home():
     return {"message": "OK"}
 
 if __name__ == "__main__":
-    app.run(threaded=True, debug=True)
+    flask_app.run(threaded=True, debug=True)

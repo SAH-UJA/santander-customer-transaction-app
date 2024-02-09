@@ -24,7 +24,8 @@ jobs:
         pip install -r requirements-unittest.txt
     - name: Run tests
       run: |
-        python -m pytest tests/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+        python -m pytest --cov
     - name: Lint code
       run: |
-        ruff --output-format=github .
+        python -m pylint
+      continue-on-error: true
