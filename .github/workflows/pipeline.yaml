@@ -22,15 +22,16 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        pip install -r requirements.txt
+        pip install poetry==1.7.1
+        poetry install --dev
 
     - name: Run tests
       run: |
-        python -m pytest --cov
+        poetry run pytest --cov
 
     - name: Lint code
       run: |
-        python -m pylint app/
+        poetry run pylint app/
       continue-on-error: true
     
     - name: Login to Docker Hub
