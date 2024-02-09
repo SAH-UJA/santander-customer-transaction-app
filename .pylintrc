@@ -1,0 +1,18 @@
+# pylintrc
+
+[MASTER]
+disable = C, R, W
+
+[MESSAGES CONTROL]
+# Enable only the message categories you want to check
+enable = F, E, W, C, R
+
+[REPORTS]
+output-format = colorized
+
+[BASIC]
+# Specify additional checks or options
+good-names = i, j, k, ex, Run, _
+
+[FORMAT]
+max-line-length = 120
