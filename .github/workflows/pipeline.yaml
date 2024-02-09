@@ -44,10 +44,10 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build Docker image
-      run: docker build -t your-docker-username/your-repo-name:latest .
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/santander-consumer-transactions-app:latest .
 
     - name: Push Docker image to Docker Hub
-      run: docker push your-docker-username/your-repo-name:latest
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/santander-consumer-transactions-app:latest
   
   deploy:
     name: Deploy
