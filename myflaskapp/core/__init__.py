@@ -10,7 +10,7 @@ def create_app():
     app.config['DEBUG'] = True
 
     # Import and register your blueprints or routes
-    from .routes import main_bp
+    from ..main import main_bp
     app.register_blueprint(main_bp)
 
     return app
