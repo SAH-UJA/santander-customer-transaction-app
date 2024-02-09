@@ -9,7 +9,7 @@ flask_app = Flask(__name__)
 def home():
     """Home route"""
     return {
-        "message": "OK",
+        "message": "NOK",
         "timestamp": datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
     }
 
