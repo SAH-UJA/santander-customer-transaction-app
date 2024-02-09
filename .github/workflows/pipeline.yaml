@@ -27,5 +27,5 @@ jobs:
         python -m pytest --cov
     - name: Lint code
       run: |
-        python -m pylint
+        python -m pylint app/
       continue-on-error: true
