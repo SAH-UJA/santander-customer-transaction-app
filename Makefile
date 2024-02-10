@@ -30,10 +30,9 @@ test: ## Execute test cases
 lint: ## Run lint
 
 .PHONY: imgbuild
-ENV ?= dev
 DOCKER_USERNAME = 
 imgbuild: ## Build docker image
-	docker build -t $(DOCKER_USERNAME)/santander-consumer-transactions-app/$(ENV):latest .
+	docker build -t $(DOCKER_USERNAME)/santander-consumer-transactions-app/dev:latest .
 
 .PHONY: imgpush
 ENV ?= dev
