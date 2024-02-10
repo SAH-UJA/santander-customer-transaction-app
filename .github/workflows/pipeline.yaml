@@ -39,14 +39,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps: 
-      - name: Options
-        run: make help
         
       - name: Build Docker image
-        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/santander-consumer-transactions-app/dev:latest .
 
       - name: Push Docker image to Docker Hub
-        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+        run: docker push ${{ secrets.DOCKER_USERNAME }})/santander-consumer-transactions-app/dev:latest
       
       - name: Deploy to production
         uses: johnbeynon/render-deploy-action@v0.0.8
@@ -62,10 +60,10 @@ jobs:
 
     steps:
       - name: Build Docker image
-        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=uat
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/santander-consumer-transactions-app/uat:latest .
 
       - name: Push Docker image to Docker Hub
-        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=uat
+        run: docker push ${{ secrets.DOCKER_USERNAME }})/santander-consumer-transactions-app/uat:latest
       
       - name: Deploy to production
         uses: johnbeynon/render-deploy-action@v0.0.8
@@ -81,10 +79,10 @@ jobs:
 
     steps: 
       - name: Build Docker image
-        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=prod
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/santander-consumer-transactions-app/prod:latest .
 
       - name: Push Docker image to Docker Hub
-        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=prod
+        run: docker push ${{ secrets.DOCKER_USERNAME }})/santander-consumer-transactions-app/prod:latest
       
       - name: Deploy to production
         uses: johnbeynon/render-deploy-action@v0.0.8
