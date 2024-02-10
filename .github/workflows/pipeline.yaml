@@ -1,0 +1,111 @@
+name: Santander Customer Transaction App
+
+on: [push]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: make build
+
+    - name: Run tests
+      run: make test
+
+    - name: Lint code
+      run: make lint
+      continue-on-error: true
+  
+  feature_deploy:
+    name: DEV deploy
+    if: startsWith(github.ref, 'refs/heads/feature/')
+    needs: [build] 
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+        
+      - name: Build Docker image
+        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
+
+      - name: Push Docker image to Docker Hub
+        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
+      
+      - name: Deploy to Render.com
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVICE_ID }} 
+          api-key: ${{ secrets.RENDER_API_KEY }} 
+    
+  develop_deploy:
+    name: UAT deploy
+    if: github.ref == 'refs/heads/develop'
+    needs: [build] 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=uat
+
+      - name: Push Docker image to Docker Hub
+        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=uat
+      
+      - name: Deploy to Render.com
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVICE_ID }} 
+          api-key: ${{ secrets.RENDER_API_KEY }}
+    
+  release_deploy:
+    name: PROD deploy
+    if: startsWith(github.ref, 'refs/heads/release/')
+    needs: [build] 
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=prod
+
+      - name: Push Docker image to Docker Hub
+        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=prod
+      
+      - name: Deploy to Render.com
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVICE_ID }} 
+          api-key: ${{ secrets.RENDER_API_KEY }}

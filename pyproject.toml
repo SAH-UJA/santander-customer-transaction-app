@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "santander-customer-transaction-app"
+version = "0.1.0"
+description = "A simple web app to predict if a customer will make a transaction using the famous Santander Customer Transaction Dataset."
+authors = ["SAH-UJA <sahil27ahuja1999@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+flask = "3.0.2"
+gunicorn = "21.2.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "8.0.0"
+pytest-cov = "4.1.0"
+pylint = "3.0.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

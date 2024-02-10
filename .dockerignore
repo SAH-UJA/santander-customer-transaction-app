@@ -1,0 +1,21 @@
+# .dockerignore
+
+# Exclude common files and directories
+.git
+node_modules
+__pycache__
+
+# Exclude specific files
+*.log
+.DS_Store
+
+# Exclude build artifacts
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite
+*.pdf
+*.jpg
+*.jpeg
+*.png
