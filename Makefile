@@ -27,9 +27,11 @@ test: ## Execute test cases
 	poetry run pytest --cov
 
 .PHONY: imgbuild
+DOCKER_USERNAME = 
 imgbuild:
-	docker build -t ${{ secrets.DOCKER_USERNAME }}/santander-consumer-transactions-app:latest .
+	docker build -t $(DOCKER_USERNAME)/santander-consumer-transactions-app:latest .
 
 .PHONY: imgpush
+DOCKER_USERNAME = 
 imgpush:
-	docker push ${{ secrets.DOCKER_USERNAME }}/santander-consumer-transactions-app:latest
+	docker push $(DOCKER_USERNAME)/santander-consumer-transactions-app:latest

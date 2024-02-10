@@ -40,11 +40,11 @@ jobs:
 
     - name: Build Docker image
       run: |
-        make imgbuild
+        make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
 
     - name: Push Docker image to Docker Hub
       run: |
-        make imgpush
+        make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
   
   deploy:
     name: Deploy
