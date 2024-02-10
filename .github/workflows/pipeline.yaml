@@ -33,7 +33,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
   
   feature_deploy:
-    name: Deploy
+    name: DEV deploy
     if: startsWith(github.ref, 'refs/heads/feature/')
     needs: [build] 
     runs-on: ubuntu-latest
@@ -52,7 +52,7 @@ jobs:
           api-key: ${{ secrets.RENDER_API_KEY }} 
     
   develop_deploy:
-    name: Deploy
+    name: UAT deploy
     if: github.ref == 'refs/heads/develop'
     needs: [build] 
     runs-on: ubuntu-latest
@@ -71,7 +71,7 @@ jobs:
           api-key: ${{ secrets.RENDER_API_KEY }}
     
   release_deploy:
-    name: Deploy
+    name: PROD deploy
     if: startsWith(github.ref, 'refs/heads/release/')
     needs: [build] 
     runs-on: ubuntu-latest
