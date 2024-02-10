@@ -1,9 +1,6 @@
 name: Santander Customer Transaction App
 
-on:
-  push:
-    branches:
-      - feature/*
+on: [push]
 
 jobs:
   build:
@@ -37,7 +34,7 @@ jobs:
   
   feature_deploy:
     name: Deploy
-    # if: startsWith(github.ref, 'refs/heads/feature/')
+    if: startsWith(github.ref, 'refs/heads/feature/')
     needs: [build] 
     runs-on: ubuntu-latest
 
