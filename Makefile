@@ -28,7 +28,7 @@ test: ## Execute test cases
 
 .PHONY: lint
 lint: ## Run lint
-	poetry run pylint myflaskapp/
+	poetry run pylint ./server
 
 .PHONY: imgbuild
 DOCKER_USERNAME = 
