@@ -39,11 +39,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps: 
+      - name: Options
+        run: make help
+        
       - name: Build Docker image
-        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
+        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
 
       - name: Push Docker image to Docker Hub
-        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
+        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
       
       - name: Deploy to production
         uses: johnbeynon/render-deploy-action@v0.0.8
@@ -57,7 +60,7 @@ jobs:
     needs: [build] 
     runs-on: ubuntu-latest
 
-    steps: 
+    steps:
       - name: Build Docker image
         run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=uat
 
