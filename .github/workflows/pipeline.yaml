@@ -43,12 +43,12 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/santander-consumer-transactions-app/dev:latest .
+        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
 
       - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }})/santander-consumer-transactions-app/dev:latest
+        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
       
-      - name: Deploy to DEV
+      - name: Deploy to Render.com
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{ secrets.SERVICE_ID }} 
@@ -65,12 +65,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/santander-consumer-transactions-app/uat:latest .
+        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=uat
 
       - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }})/santander-consumer-transactions-app/uat:latest
+        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=uat
       
-      - name: Deploy to UAT
+      - name: Deploy to Render.com
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{ secrets.SERVICE_ID }} 
@@ -85,14 +85,14 @@ jobs:
     steps: 
       - name: Checkout repository
         uses: actions/checkout@v2
-        
+
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/santander-consumer-transactions-app/prod:latest .
+        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=prod
 
       - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }})/santander-consumer-transactions-app/prod:latest
+        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=prod
       
-      - name: Deploy to PROD
+      - name: Deploy to Render.com
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{ secrets.SERVICE_ID }} 
