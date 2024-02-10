@@ -3,7 +3,7 @@ name: Santander Customer Transaction App
 on:
   push:
     branches:
-      - '*'
+      - feature/*
 
 jobs:
   build:
