@@ -47,12 +47,6 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
-      
-      - name: Deploy to Render.com
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.SERVICE_ID }} 
-          api-key: ${{ secrets.RENDER_API_KEY }} 
     
   develop_deploy:
     name: UAT deploy
@@ -79,7 +73,7 @@ jobs:
       - name: Deploy to Render.com
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          service-id: ${{ secrets.SERVICE_ID }} 
+          service-id: ${{ secrets.RENDER_SERVICE_ID_UAT }} 
           api-key: ${{ secrets.RENDER_API_KEY }}
     
   release_deploy:
@@ -107,5 +101,5 @@ jobs:
       - name: Deploy to Render.com
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          service-id: ${{ secrets.SERVICE_ID }} 
+          service-id: ${{ secrets.RENDER_SERVICE_ID_PROD }} 
           api-key: ${{ secrets.RENDER_API_KEY }}
