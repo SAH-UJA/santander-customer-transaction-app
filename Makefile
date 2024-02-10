@@ -24,10 +24,11 @@ build: prebuild ## Install dependencies
 
 .PHONY: test
 test: ## Execute test cases
-	poetry run pytest --cov
+	poetry run pytest
 
 .PHONY: lint
 lint: ## Run lint
+	poetry run pylint myflaskapp/
 
 .PHONY: imgbuild
 DOCKER_USERNAME = 
