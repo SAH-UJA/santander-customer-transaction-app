@@ -18,4 +18,5 @@ jobs:
       - name: Push to hub
         env:
           HF: ${{ secrets.HF_ACCESS_TOKEN }}
-        run: git push --force https://SahilAhuja:$HF@huggingface.co/spaces/noahgift/demo main
+        run: git push --force https://SahilAhuja:$HF@huggingface.co/spaces/SahilAhuja/santander-customer-transaction-app main
+        
