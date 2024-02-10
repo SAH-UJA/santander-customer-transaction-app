@@ -30,13 +30,13 @@ test: ## Execute test cases
 lint: ## Run lint
 
 .PHONY: imgbuild
-DOCKER_USERNAME = 
 ENV ?= dev
+DOCKER_USERNAME = 
 imgbuild: ## Build docker image
 	docker build -t $(DOCKER_USERNAME)/santander-consumer-transactions-app/$(ENV):latest .
 
 .PHONY: imgpush
-DOCKER_USERNAME = 
 ENV ?= dev
+DOCKER_USERNAME = 
 imgpush: ## Push docker image to container registry
 	docker push $(DOCKER_USERNAME)/santander-consumer-transactions-app/$(ENV):latest
