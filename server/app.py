@@ -1,9 +1,7 @@
 from server.core.config import settings
 from server.routers.api_v1.api import api_router
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 
 
 app = FastAPI(
@@ -25,15 +23,9 @@ app.add_middleware(
 )
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
-app.mount("/static", StaticFiles(directory="server/static"), name="static")
-templates = Jinja2Templates(directory="server/templates")
 
 @app.get("/")
 async def health():
     return {
         "message": "Santander Customer Transaction Analytics App Is Running..."
     }
-
-@app.get("/ui")
-def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})

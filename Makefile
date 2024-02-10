@@ -41,3 +41,12 @@ ENV ?= dev
 DOCKER_USERNAME = 
 imgpush: ## Push docker image to container registry
 	docker push $(DOCKER_USERNAME)/santander-consumer-transactions-app-$(ENV):latest
+
+.PHONY: datafetch
+datafetch:
+	mkdir -p ~/.kaggle
+	cp -r ./kaggle.json ~/.kaggle/
+	chmod 600 ~/.kaggle/kaggle.json
+	poetry run kaggle competitions download -c santander-customer-transaction-prediction -p ./data/raw/
+	unzip ./data/raw/santander-customer-transaction-prediction.zip -d ./data/raw
+	rm -rf ./data/raw/santander-customer-transaction-prediction.zip
