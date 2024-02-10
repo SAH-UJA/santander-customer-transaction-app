@@ -26,12 +26,17 @@ build: prebuild ## Install dependencies
 test: ## Execute test cases
 	poetry run pytest --cov
 
+.PHONY: lint
+lint: ## Run lint
+
 .PHONY: imgbuild
 DOCKER_USERNAME = 
-imgbuild:
-	docker build -t $(DOCKER_USERNAME)/santander-consumer-transactions-app:latest .
+ENV ?= dev
+imgbuild: ## Build docker image
+	docker build -t $(DOCKER_USERNAME)/santander-consumer-transactions-app/$(ENV):latest .
 
 .PHONY: imgpush
 DOCKER_USERNAME = 
-imgpush:
-	docker push $(DOCKER_USERNAME)/santander-consumer-transactions-app:latest
+ENV ?= dev
+imgpush: ## Push docker image to container registry
+	docker push $(DOCKER_USERNAME)/santander-consumer-transactions-app/$(ENV):latest
