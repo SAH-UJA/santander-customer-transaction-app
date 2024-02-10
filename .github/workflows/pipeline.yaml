@@ -37,7 +37,7 @@ jobs:
   
   feature_deploy:
     name: Deploy
-    if: startsWith(github.ref, 'refs/heads/feature/')
+    # if: startsWith(github.ref, 'refs/heads/feature/')
     needs: [build] 
     runs-on: ubuntu-latest
 
