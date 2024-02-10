@@ -46,7 +46,7 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }})/santander-consumer-transactions-app/dev:latest
       
-      - name: Deploy to production
+      - name: Deploy to DEV
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{ secrets.SERVICE_ID }} 
@@ -65,7 +65,7 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }})/santander-consumer-transactions-app/uat:latest
       
-      - name: Deploy to production
+      - name: Deploy to UAT
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{ secrets.SERVICE_ID }} 
@@ -84,7 +84,7 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }})/santander-consumer-transactions-app/prod:latest
       
-      - name: Deploy to production
+      - name: Deploy to PROD
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{ secrets.SERVICE_ID }} 
