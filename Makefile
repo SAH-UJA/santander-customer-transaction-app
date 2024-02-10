@@ -5,7 +5,7 @@
 
 .PHONY: clean
 clean: ## Remove temporary cache/coverage files
-	rm -rf __pycache__ .pytest_cache .coverage
+	rm -rf __pycache__ .pytest_cache .coverage **/__pycache__
 
 .PHONY: help
 help: ## Show make target documentation
