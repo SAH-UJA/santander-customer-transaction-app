@@ -73,7 +73,7 @@ jobs:
       - name: Deploy to Render.com
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          service-id: ${{ secrets.SERVICE_ID_UAT }} 
+          service-id: ${{ secrets.RENDER_SERVICE_ID_UAT }} 
           api-key: ${{ secrets.RENDER_API_KEY }}
     
   release_deploy:
@@ -101,5 +101,5 @@ jobs:
       - name: Deploy to Render.com
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          service-id: ${{ secrets.SERVICE_ID_PROD }} 
+          service-id: ${{ secrets.RENDER_SERVICE_ID_PROD }} 
           api-key: ${{ secrets.RENDER_API_KEY }}
