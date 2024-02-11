@@ -23,7 +23,9 @@ def test_upload_file():
     - Ensure the response content matches the expected content for successful file upload.
     """
     # Prepare test data
-    test_data_path = os.path.join(Path(__file__).parent, "data", "batch_of_two.csv")
+    test_data_path = os.path.join(
+        Path(__file__).parent, "test_data", "batch_of_two.csv"
+    )
     files = {"data_file": ("batch_of_two.csv", open(test_data_path, "rb"))}
 
     # Make the API call
