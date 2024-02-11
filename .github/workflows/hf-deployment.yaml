@@ -7,6 +7,8 @@ jobs:
   sync-to-hub:
     runs-on: ubuntu-latest
     steps:
+      - name: reset commit
+        run: git filter-branch --force --index-filter "git rm --cached --ignore-unmatch server/model/lgb_clf.pkl" --prune-empty --tag-name-filter cat -- --all
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
