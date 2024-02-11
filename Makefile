@@ -25,11 +25,11 @@ build: prebuild ## Install dependencies
 
 .PHONY: test
 test: ## Execute test cases
-	poetry run pytest
+	python -m poetry run pytest
 
 .PHONY: lint
 lint: ## Run lint
-	poetry run pylint ./server
+	python -m poetry run pylint ./server
 
 .PHONY: imgbuild
 DOCKER_USERNAME ?= user
@@ -48,34 +48,38 @@ datafetch: ## Fetch raw data from kaggle
 	mkdir -p ~/.kaggle
 	cp -r ./kaggle.json ~/.kaggle/
 	chmod 600 ~/.kaggle/kaggle.json
-	poetry run kaggle competitions download -c santander-customer-transaction-prediction -p ./data/raw/
+	python -m poetry run kaggle competitions download -c santander-customer-transaction-prediction -p ./data/raw/
 	unzip ./data/raw/santander-customer-transaction-prediction.zip -d ./data/raw
 	rm -rf ./data/raw/santander-customer-transaction-prediction.zip
 
 .PHONY: runserver
 runserver: ## Run inference server on local
-	poetry run python -m server
+	python -m poetry run python -m server
 
 .PHONY: mlflow
 mlflow: ## Run mlflow ui
-	poetry run mlflow ui
+	python -m poetry run mlflow ui
+
+.PHONY: kfolds
+kfolds: ## Run kfolds split on raw data
+	python -m poetry run python -m ml.create_folds
 
 .PHONY: train
 TRAINING_DATA ?= data/raw/train_folds.csv
 TEST_DATA ?= data/raw/test.csv
 MODEL = lightgbm
 train: ## Train classifier
-	FOLD=0 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) poetry run python -m ml.train
-	FOLD=1 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) poetry run python -m ml.train
-	FOLD=2 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) poetry run python -m ml.train
-	FOLD=3 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) poetry run python -m ml.train
-	FOLD=4 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) poetry run python -m ml.train
+	FOLD=0 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m poetry run python -m ml.train
+	FOLD=1 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m poetry run python -m ml.train
+	FOLD=2 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m poetry run python -m ml.train
+	FOLD=3 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m poetry run python -m ml.train
+	FOLD=4 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m poetry run python -m ml.train
 
 .PHONY: predict
 TEST_DATA ?= data/raw/test.csv
 MODEL =
 predict: ## Run classifier on test set
-	MODEL=$(MODEL) TEST_DATA=$(TEST_DATA) poetry run python -m ml.predict
+	MODEL=$(MODEL) TEST_DATA=$(TEST_DATA) python -m poetry run python -m ml.predict
 
 .PHONY: stagemodel
 MODEL =  
@@ -83,5 +87,10 @@ stagemodel: ## Stage model for deployment
 	cp models/$(MODEL) staged/clf.pkl
 
 .PHONY: cleanmodels
-cleanmodels:
+cleanmodels: ## Clean stashed models
 	rm -rf models/*
+
+.PHONY: runstreamlit
+runstreamlit: ## Run streamlit app locally
+	python -m pip install -r requirements.txt
+	BACKEND_HOST=http://localhost:8000 python -m streamlit run streamlit_app.py
