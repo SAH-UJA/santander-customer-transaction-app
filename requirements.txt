@@ -1,2 +1,2 @@
 streamlit==1.31.0
-requests==2.29.0
+requests==1.25.0
