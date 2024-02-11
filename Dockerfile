@@ -26,7 +26,7 @@ COPY ./config /app/config
 COPY ./utils /app/utils
 
 # Copy the prediction model
-COPY ./models /app/models
+COPY ./staged /app/staged
 
 # Copy application server code
 COPY ./server /app/server
