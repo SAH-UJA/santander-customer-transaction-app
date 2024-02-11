@@ -2,7 +2,7 @@
 
 classification:
   inference:
-    model_path: models/model_v1/lgb_clf.pkl
+    model_path: models/model_v1/clf.pkl
     api_prefix: /classification/inference
     api_tags:
       - Santander Customesr Transaction Prediction

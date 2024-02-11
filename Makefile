@@ -55,3 +55,25 @@ datafetch: ## Fetch raw data from kaggle
 .PHONY: runserver
 runserver: ## Run inference server on local
 	poetry run python -m server
+
+.PHONY: train
+TRAINING_DATA ?= data/raw/train_folds.csv
+TEST_DATA ?= data/raw/test.csv
+MODEL ?= lightgbm
+train: ## Train classifier
+	FOLD=0 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m ml.train
+	FOLD=1 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m ml.train
+	FOLD=2 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m ml.train
+	FOLD=3 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m ml.train
+	FOLD=4 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m ml.train
+
+.PHONY: predict
+TEST_DATA ?= data/raw/test.csv
+MODEL ?= lightgbm
+predict: ## Run classifier on test set
+	MODEL=$(MODEL) TEST_DATA=$(TEST_DATA) python -m ml.predict
+
+.PHONY: stagemodel
+MODEL =  
+stagemodel: ## Stage model for deployment
+	cp models/$(MODEL) models/model_v1/clf.pkl
