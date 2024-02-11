@@ -163,3 +163,5 @@ cython_debug/
 models/
 data/raw/
 kaggle.json
+mlruns/
+mlartifacts/
