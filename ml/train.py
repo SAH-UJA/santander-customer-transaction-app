@@ -1,12 +1,9 @@
 import os
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
-
 from sklearn import metrics
 import joblib
-
 import mlflow
-
 from . import dispatcher
 
 mlflow.set_tracking_uri("http://127.0.0.1:5000")
@@ -24,7 +21,11 @@ FOLD_MAPPPING = {
     4: [0, 1, 2, 3],
 }
 
-if __name__ == "__main__":
+
+def train_and_evaluate():
+    """
+    Train a model, evaluate its performance, and log the results using MLflow.
+    """
     df = pd.read_csv(TRAINING_DATA)
     df_test = pd.read_csv(TEST_DATA)
     train_df = df[df.kfold.isin(FOLD_MAPPPING.get(FOLD))].reset_index(drop=True)
@@ -49,17 +50,19 @@ if __name__ == "__main__":
         valid_df.loc[:, c] = std_scaler.transform(valid_df[c].to_frame())
         std_scalers[c] = std_scaler
 
-    # data is ready to train
+    # Data is ready to train
     clf = dispatcher.MODELS[MODEL]
     clf.fit(train_df, ytrain)
     preds = clf.predict_proba(valid_df)[:, 1]
     roc_auc = metrics.roc_auc_score(yvalid, preds)
     print(roc_auc)
 
+    # Save standard scalers, model, and columns for later use
     joblib.dump(std_scalers, f"models/{MODEL}_{FOLD}_std_scaler.pkl")
     joblib.dump(clf, f"models/{MODEL}_{FOLD}.pkl")
     joblib.dump(train_df.columns, f"models/{MODEL}_{FOLD}_columns.pkl")
 
+    # Log results using MLflow
     with mlflow.start_run():
         # Log model parameters
         mlflow.log_params(clf.get_params())
@@ -69,3 +72,7 @@ if __name__ == "__main__":
 
         # Log model
         dispatcher.MLFLOW.get(MODEL).log_model(clf, MODEL)
+
+
+if __name__ == "__main__":
+    train_and_evaluate()
