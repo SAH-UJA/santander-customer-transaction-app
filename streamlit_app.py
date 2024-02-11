@@ -15,6 +15,9 @@ import os
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+DEPLOYED_TARGET: str = "https://santander-customer-transaction-app.onrender.com"
+BACKEND_HOST: str = os.getenv("BACKEND_HOST", default=DEPLOYED_TARGET)
+
 
 def call_api(file_contents, api_endpoint):
     """
@@ -68,7 +71,8 @@ def main():
 
             # Get API endpoint from environment variable
             inference_route = "api/v1/classification/inference/uploadfile"
-            api_endpoint = f"https://santander-customer-transaction-app.onrender.com/{inference_route}"
+
+            api_endpoint = f"{BACKEND_HOST}/{inference_route}"
 
             # Call the API with the file contents
             api_response = call_api(file_contents, api_endpoint)
