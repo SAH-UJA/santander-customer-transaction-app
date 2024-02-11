@@ -5,7 +5,8 @@
 
 .PHONY: clean
 clean: ## Remove temporary cache/coverage files
-	rm -rf __pycache__ .pytest_cache .coverage **/__pycache__
+	find . -type d -name "__pycache__" -exec rm -rf {} +
+	rm -rf .pytest_cache .coverage
 
 .PHONY: help
 help: ## Show make target documentation
@@ -31,22 +32,26 @@ lint: ## Run lint
 	poetry run pylint ./server
 
 .PHONY: imgbuild
-DOCKER_USERNAME = 
-ENV =
+DOCKER_USERNAME ?= user
+ENV ?= local
 imgbuild: ## Build docker image
 	docker build -t $(DOCKER_USERNAME)/santander-consumer-transactions-app-$(ENV):latest .
 
 .PHONY: imgpush
-ENV ?= dev
-DOCKER_USERNAME = 
+DOCKER_USERNAME = user
+ENV ?= local 
 imgpush: ## Push docker image to container registry
 	docker push $(DOCKER_USERNAME)/santander-consumer-transactions-app-$(ENV):latest
 
 .PHONY: datafetch
-datafetch:
+datafetch: ## Fetch raw data from kaggle
 	mkdir -p ~/.kaggle
 	cp -r ./kaggle.json ~/.kaggle/
 	chmod 600 ~/.kaggle/kaggle.json
 	poetry run kaggle competitions download -c santander-customer-transaction-prediction -p ./data/raw/
 	unzip ./data/raw/santander-customer-transaction-prediction.zip -d ./data/raw
 	rm -rf ./data/raw/santander-customer-transaction-prediction.zip
+
+.PHONY: runserver
+runserver: ## Run inference server on local
+	poetry run python -m server
