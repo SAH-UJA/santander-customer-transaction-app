@@ -5,7 +5,11 @@ from sklearn.preprocessing import StandardScaler
 from sklearn import metrics
 import joblib
 
+import mlflow
+
 from . import dispatcher
+
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
 TRAINING_DATA = os.environ.get("TRAINING_DATA")
 TEST_DATA = os.environ.get("TEST_DATA")
@@ -49,8 +53,19 @@ if __name__ == "__main__":
     clf = dispatcher.MODELS[MODEL]
     clf.fit(train_df, ytrain)
     preds = clf.predict_proba(valid_df)[:, 1]
-    print(metrics.roc_auc_score(yvalid, preds))
+    roc_auc = metrics.roc_auc_score(yvalid, preds)
+    print(roc_auc)
 
     joblib.dump(std_scalers, f"models/{MODEL}_{FOLD}_std_scaler.pkl")
     joblib.dump(clf, f"models/{MODEL}_{FOLD}.pkl")
     joblib.dump(train_df.columns, f"models/{MODEL}_{FOLD}_columns.pkl")
+
+    with mlflow.start_run():
+        # Log model parameters
+        mlflow.log_params(clf.get_params())
+
+        # Log evaluation metrics
+        mlflow.log_metric("roc_auc", roc_auc)
+
+        # Log model
+        dispatcher.MLFLOW.get(MODEL).log_model(clf, MODEL)
