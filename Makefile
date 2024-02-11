@@ -61,7 +61,7 @@ mlflow: ## Run mlflow ui
 	python -m poetry run mlflow ui
 
 .PHONY: kfolds
-kfolds:
+kfolds: ## Run kfolds split on raw data
 	python -m poetry run python -m ml.create_folds
 
 .PHONY: train
@@ -87,5 +87,10 @@ stagemodel: ## Stage model for deployment
 	cp models/$(MODEL) staged/clf.pkl
 
 .PHONY: cleanmodels
-cleanmodels:
+cleanmodels: ## Clean stashed models
 	rm -rf models/*
+
+.PHONY: runstreamlit
+runstreamlit: ## Run streamlit app locally
+	python -m pip install -r requirements.txt
+	BACKEND_HOST=http://localhost:8000 python -m streamlit run streamlit_app.py
