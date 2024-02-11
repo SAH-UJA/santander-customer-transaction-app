@@ -13,10 +13,12 @@ jobs:
           lfs: true
       - name: reset commit
         run: git filter-branch --force --index-filter "git rm --cached --ignore-unmatch server/model/lgb_clf.pkl" --prune-empty --tag-name-filter cat -- --all
-      - name: Add remote 
-        env:
-          HF_TOKEN: ${{ secrets.HF_ACCESS_TOKEN }}
-        run: git remote add space https://SahilAhuja:$HF_TOKEN@huggingface.co/spaces/SahilAhuja/santander-customer-transaction-app
+      - name: LFS Install
+        run: git lfs install
+      - name: LFS Track
+        run: git lfs track *.pkl
+      - name: Checkout LFS objects
+        run: git lfs checkout
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_ACCESS_TOKEN }}
