@@ -19,7 +19,7 @@ def call_api(file_contents):
 
 # Streamlit app
 def main():
-    st.title('App')
+    st.title('Santander Customer Transaction Inference App')
 
     # File upload
     uploaded_file = st.file_uploader('Choose a file', type=['csv'],  accept_multiple_files=False)
