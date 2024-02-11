@@ -7,12 +7,12 @@ jobs:
   sync-to-hub:
     runs-on: ubuntu-latest
     steps:
-      - name: reset commit
-        run: git filter-branch --force --index-filter "git rm --cached --ignore-unmatch server/model/lgb_clf.pkl" --prune-empty --tag-name-filter cat -- --all
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
           lfs: true
+      - name: reset commit
+        run: git filter-branch --force --index-filter "git rm --cached --ignore-unmatch server/model/lgb_clf.pkl" --prune-empty --tag-name-filter cat -- --all
       - name: Add remote 
         env:
           HF_TOKEN: ${{ secrets.HF_ACCESS_TOKEN }}
