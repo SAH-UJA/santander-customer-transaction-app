@@ -111,10 +111,10 @@ make test
 
 # Glimpses
 
-[Deployed API Docs](api.png)
+![Deployed API Docs](api.png)
 
-[Expermentation Tracking](mlflow.png)
+![Expermentation Tracking](mlflow.png)
 
-[Monitoring](monitor.png)
+![Monitoring](monitor.png)
 
-[User Interface](ui.png)
+![User Interface](ui.png)
