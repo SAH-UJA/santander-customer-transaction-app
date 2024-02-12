@@ -26,7 +26,7 @@ COPY ./config /app/config
 COPY ./utils /app/utils
 
 # Copy the prediction model
-COPY ./staged /app/staged
+COPY ./staged/clf.pkl /app/staged/clf.pkl
 
 # Copy application server code
 COPY ./server /app/server
