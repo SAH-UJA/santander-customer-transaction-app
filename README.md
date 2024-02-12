@@ -31,6 +31,12 @@ Welcome to the Santander Customer Transaction App! 🚀 This Streamlit applicati
 1. Install dependencies: `pip install -r requirements.txt`
 2. Run the Streamlit app: `streamlit run streamlit_app.py`
 
+## Deployed App
+
+1. [__PROD API Server__](https://santander-customer-transaction-app.onrender.com/api/v1/docs)
+2. [__UAT API Server__](https://santander-customer-transaction-app-uat.onrender.com/api/v1/docs)
+3. [__Streamlit UI Application__](https://huggingface.co/spaces/SahilAhuja/santander-customer-transaction-app)
+
 ## Contributing
 
 👩‍💻 We welcome contributions! If you want to enhance or fix something, feel free to open an issue or submit a pull request.
