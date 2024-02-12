@@ -33,6 +33,7 @@ COPY ./server /app/server
 
 # Copy the tests
 COPY ./tests /app/tests/
+COPY pytest.ini /app/pytest.ini
 
 # Check model hash
 RUN make checkmodelhash
