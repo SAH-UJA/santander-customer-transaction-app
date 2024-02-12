@@ -31,6 +31,9 @@ COPY ./staged /app/staged
 # Copy application server code
 COPY ./server /app/server
 
+# Check model hash
+RUN make checkmodelhash
+
 # Expose the application port
 EXPOSE 8000
 
