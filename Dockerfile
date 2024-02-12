@@ -34,6 +34,9 @@ COPY ./server /app/server
 # Check model hash
 RUN make checkmodelhash
 
+# Test the deployment
+RUN make test
+
 # Expose the application port
 EXPOSE 8000
 
