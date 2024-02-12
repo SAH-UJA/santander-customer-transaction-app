@@ -28,6 +28,9 @@ jobs:
     - name: Lint code
       run: make lint
       continue-on-error: true
+    
+    - name: Check model hash
+      run: make checkmodelhash
   
   feature_deploy:
     name: DEV deploy
@@ -60,7 +63,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      
+
       - name: Login to Docker Hub
         uses: docker/login-action@v1
         with:
@@ -72,7 +75,7 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=uat
-      
+
       - name: Deploy to Render.com
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
