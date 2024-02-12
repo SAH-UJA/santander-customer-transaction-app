@@ -69,4 +69,7 @@ async def run_batch_inference(data_file: UploadFile = File(...)):
         return {
             "error": str(exc),
             "meta": os.path.join(os.getcwd(), classification_config["model_path"]),
+            "exists": os.path.exists(
+                os.path.join(os.getcwd(), classification_config["model_path"])
+            ),
         }
