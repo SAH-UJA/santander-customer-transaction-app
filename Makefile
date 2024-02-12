@@ -34,7 +34,7 @@ lint: ## Run lint
 .PHONY: imgbuild
 DOCKER_USERNAME ?= user
 ENV ?= local
-imgbuild: checkmodelhash ## Build docker image
+imgbuild: ## Build docker image
 	docker build --no-cache -t $(DOCKER_USERNAME)/santander-consumer-transactions-app-$(ENV):latest .
 
 .PHONY: imgpush
