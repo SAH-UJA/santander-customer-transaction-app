@@ -4,7 +4,7 @@ A simple web app to predict if a customer will make a transaction using the famo
 # Background
 This projects demonstrates a basic MLOps pipeline for a machine learning model using Python and incorporating key DevOps best practices. The model developed in this project is a simple classification model to predict if a customer will make a transaction, using the famous Santander Customer Transaction Dataset.
 
-# Pipeline Components ([Design Diagram](design.jpeg))
+# Pipeline Components ([Design](design.jpeg))
 
 * __Experimentation Tracking__: The journey of a model begins on local where data scientist build/train a model. With so many iterations needed to come up with an optimal model performing well on test set, it is essential to have an experimentation tracking server in place. Here's in our design we have used MLFlow which is an open-source well-established tool for experiment/model tracking, logging and registry.
 
@@ -110,6 +110,8 @@ make test
 
 
 # Glimpses
+
+![Design](design.jpeg)
 
 ![Deployed API Docs](api.png)
 
