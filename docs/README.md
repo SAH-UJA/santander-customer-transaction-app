@@ -4,7 +4,7 @@ A simple web app to predict if a customer will make a transaction using the famo
 # Background
 This projects demonstrates a basic MLOps pipeline for a machine learning model using Python and incorporating key DevOps best practices. The model developed in this project is a simple classification model to predict if a customer will make a transaction, using the famous Santander Customer Transaction Dataset.
 
-# Pipeline Components ([Design Diagram](docs/design.jpeg))
+# Pipeline Components ([Design Diagram](design.jpeg))
 
 * Experimentation Tracking: The journey of a model begins on local where data scientist build/train a model. With so many iterations needed to come up with an optimal model performing well on test set, it is essential to have an experimentation tracking server in place. Here's in our design we have used MLFlow which is an open-source well-established tool for experiment/model tracking, logging and registry.
 
@@ -39,7 +39,8 @@ git clone https://github.com/SAH-UJA/santander-customer-transaction-app.git # Cl
 make build # Install all the dependencies and packages
 ```
 
-### Run backend server (Swagger UI can be viewed at /api/v1/docs route)
+### Run backend server 
+#### Swagger UI can be viewed at /api/v1/docs route
 ```bash
 make runserver # Spins up the FastAPI backend which serves the inference API
 ```
@@ -51,7 +52,8 @@ make runstreamlit # Spins up a Streamlit UI app and uses the backend server runn
 
 ## Modeling Workflow
 
-### Fetch data from kaggle (In order to get the data from kaggle, you'd require kaggle.json file that contains the username and the API key to be stored in .kaggle folder in the root of this project)
+### Fetch data from kaggle 
+#### In order to get the data from kaggle, you'd require kaggle.json file that contains the username and the API key to be stored in .kaggle folder in the root of this project
 ```bash
 make datafetch # The raw data gets stored in data/raw/ folder
 ```
@@ -66,7 +68,8 @@ make kfolds # This will create 5 folds of data in the data/raw/ folder
 make mlflow # This will launch mlflow tracking server
 ```
 
-### Train the model (Add more models in [ml/dispatcher.py] to use them with this interface)
+### Train the model 
+#### More models can be added in [ml/dispatcher.py] to use them with this interface
 ```bash
 make train MODEL=lightgbm # This will train lightgbm model on the data folds. Other model available is "randomforest"
 ```
