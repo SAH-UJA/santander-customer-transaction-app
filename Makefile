@@ -93,4 +93,4 @@ cleanmodels: ## Clean stashed models
 .PHONY: runstreamlit
 runstreamlit: ## Run streamlit app locally
 	python -m pip install -r requirements.txt
-	BACKEND_HOST=http://localhost:8000 python -m streamlit run streamlit_app.py
+	DEPLOYED_TARGET=http://localhost:8000 BACKUP_TARGET=http://localhost:8000 python -m streamlit run streamlit_app.py
