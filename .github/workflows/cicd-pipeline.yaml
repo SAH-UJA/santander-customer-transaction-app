@@ -31,16 +31,28 @@ jobs:
     
     - name: Check model hash
       run: make checkmodelhash
-  
-  # feature_deploy:
-  #   name: DEV deploy
-  #   if: startsWith(github.ref, 'refs/heads/feature/')
-  #   needs: [build] 
-  #   runs-on: ubuntu-latest
+    
+    - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+        
+      - name: Build Docker image
+        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
 
-  #   steps: 
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v2
+      - name: Push Docker image to Docker Hub
+        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
+  
+  feature_deploy:
+    name: DEV deploy
+    if: startsWith(github.ref, 'refs/heads/feature/')
+    needs: [build] 
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Checkout repository
+        uses: actions/checkout@v2
       
       - name: Login to Docker Hub
         uses: docker/login-action@v1
