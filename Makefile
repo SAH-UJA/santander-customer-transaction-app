@@ -56,6 +56,10 @@ datafetch: ## Fetch raw data from kaggle
 runserver: ## Run inference server on local
 	python -m poetry run python -m server
 
+.PHONY: checkmodelhash
+checkmodelhash:
+	python -m poetry run python -m utils.check_hash
+
 .PHONY: mlflow
 mlflow: ## Run mlflow ui
 	python -m poetry run mlflow ui
