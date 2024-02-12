@@ -35,7 +35,7 @@ lint: ## Run lint
 DOCKER_USERNAME ?= user
 ENV ?= local
 imgbuild: ## Build docker image
-	docker build -t $(DOCKER_USERNAME)/santander-consumer-transactions-app-$(ENV):latest .
+	docker build --no-cache -t $(DOCKER_USERNAME)/santander-consumer-transactions-app-$(ENV):latest .
 
 .PHONY: imgpush
 DOCKER_USERNAME = user
@@ -55,6 +55,10 @@ datafetch: ## Fetch raw data from kaggle
 .PHONY: runserver
 runserver: ## Run inference server on local
 	python -m poetry run python -m server
+
+.PHONY: checkmodelhash
+checkmodelhash:
+	python -m poetry run python -m utils.check_hash
 
 .PHONY: mlflow
 mlflow: ## Run mlflow ui

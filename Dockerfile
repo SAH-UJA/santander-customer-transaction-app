@@ -26,10 +26,20 @@ COPY ./config /app/config
 COPY ./utils /app/utils
 
 # Copy the prediction model
-COPY ./staged /app/staged
+ADD ./staged/clf.pkl /app/staged/clf.pkl
 
 # Copy application server code
 COPY ./server /app/server
+
+# Copy the tests
+COPY ./tests /app/tests/
+COPY pytest.ini /app/pytest.ini
+
+# Check model hash
+RUN make checkmodelhash
+
+# Test the deployment
+RUN make test
 
 # Expose the application port
 EXPOSE 8000
