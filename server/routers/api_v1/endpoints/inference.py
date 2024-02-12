@@ -66,4 +66,7 @@ async def run_batch_inference(data_file: UploadFile = File(...)):
             resp = results_df.to_json(orient="records")
         return json.loads(resp)
     except Exception as exc:
-        return {"error": str(exc)}
+        return {
+            "error": str(exc),
+            "meta": os.path.join(os.getcwd(), classification_config["model_path"]),
+        }
