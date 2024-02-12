@@ -56,11 +56,14 @@ async def run_batch_inference(data_file: UploadFile = File(...)):
     """
     Endpoint for running batch inference on customer transaction data.
     """
-    with tempfile.NamedTemporaryFile() as temp_file:
-        contents = await data_file.read()
-        temp_file.write(contents)
-        temp_file_path = temp_file.name
-        df = pd.read_csv(temp_file_path)
-        results_df = perform_inference(df)
-        resp = results_df.to_json(orient="records")
-    return json.loads(resp)
+    try:
+        with tempfile.NamedTemporaryFile() as temp_file:
+            contents = await data_file.read()
+            temp_file.write(contents)
+            temp_file_path = temp_file.name
+            df = pd.read_csv(temp_file_path)
+            results_df = perform_inference(df)
+            resp = results_df.to_json(orient="records")
+        return json.loads(resp)
+    except Exception as exc:
+        return {"error": str(exc)}
