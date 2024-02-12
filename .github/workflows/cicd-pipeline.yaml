@@ -33,16 +33,16 @@ jobs:
       run: make checkmodelhash
     
     - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
         
-      - name: Build Docker image
-        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
+    - name: Build Docker image
+      run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
 
-      - name: Push Docker image to Docker Hub
-        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
+    - name: Push Docker image to Docker Hub
+      run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
   
   feature_deploy:
     name: DEV deploy
