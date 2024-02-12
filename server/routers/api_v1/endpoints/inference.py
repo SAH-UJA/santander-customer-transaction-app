@@ -9,7 +9,7 @@ from fastapi import APIRouter, File, UploadFile
 import pandas as pd
 import numpy as np
 import tempfile
-import pickle
+import joblib
 from pathlib import Path
 import os
 import lightgbm
@@ -32,7 +32,7 @@ def load_lightgbm_model():
     """
     model_path = os.path.join(os.getcwd(), classification_config["model_path"])
     with open(model_path, "rb") as file:
-        return pickle.load(file)
+        return joblib.load(file)
 
 
 def perform_inference(df):

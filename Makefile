@@ -35,7 +35,7 @@ lint: ## Run lint
 DOCKER_USERNAME ?= user
 ENV ?= local
 imgbuild: ## Build docker image
-	docker build --no-cache -t $(DOCKER_USERNAME)/santander-consumer-transactions-app-$(ENV):latest .
+	docker build -t $(DOCKER_USERNAME)/santander-consumer-transactions-app-$(ENV):latest .
 
 .PHONY: imgpush
 DOCKER_USERNAME = user
