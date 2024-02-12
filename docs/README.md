@@ -111,12 +111,22 @@ make test
 
 # Glimpses
 
+### High Level Design
+
 ![Design](design.jpeg)
+
+### Deployed Batch Inference API
 
 ![Deployed API Docs](api.png)
 
+### Experimentation Tracking On MLFlow
+
 ![Expermentation Tracking](mlflow.png)
 
+### Monitoring deployed APIs On Uptime-Monitor.io
+
 ![Monitoring](monitor.png)
+
+### Deployed Streamlit UI On HuggingFace
 
 ![User Interface](ui.png)
