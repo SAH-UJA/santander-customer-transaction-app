@@ -20,7 +20,7 @@ This projects demonstrates a basic MLOps pipeline for a machine learning model u
 
 * __Model serving__: In order to expose an interface on top of a model for users/clients to run inference and get the prediction we need an API server which in our case is FastAPI. FastAPI is an open-source ASGI server written in Python and offers rich set of feature with pretty less learning curve. The FastAPI application runs on Render.com which is a managed hosting platform that has a free tier and provides a range of features like provisioning a Postgres DB, Redis server, Web Servers, Background Jobs, etc. The only downside is that it is a bit unreliable. Due to this we have 2 versions of the API servers deployed. A Kubernetes-based platform would have been more reliable but there wasn't any available for free.
 
-* __User Interface__: UI acts as a first point of contact for users/clients therfore it is essential to design it properly and keep UI/UX principles in mind. The UI built in this project is a simple streamlit app that has allows users to upload a CSV file with all the var info (Refer [../tests/test_data/batch_of_two.csv] for sample data) and on clicking the Get Predictions buttion it hits the deployed API and gets the prediction in a neat dataframe format.
+* __User Interface__: UI acts as a first point of contact for users/clients therfore it is essential to design it properly and keep UI/UX principles in mind. The UI built in this project is a simple streamlit app that has allows users to upload a CSV file with all the var info (Refer [Test Data](../tests/test_data/batch_of_two.csv) for sample data) and on clicking the Get Predictions buttion it hits the deployed API and gets the prediction in a neat dataframe format.
 
 
 # Quick Setup Guide
