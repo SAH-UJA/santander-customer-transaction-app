@@ -10,13 +10,21 @@ import requests
 import ast
 import logging
 import os
+from urllib.parse import urljoin
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-DEPLOYED_TARGET: str = "https://santander-customer-transaction-app.onrender.com"
-BACKEND_HOST: str = os.getenv("BACKEND_HOST", default=DEPLOYED_TARGET)
+DEPLOYED_TARGET: str = os.getenv(
+    "DEPLOYED_TARGET", default="https://santander-customer-transaction-app.onrender.com"
+)
+BACKUP_TARGET: str = os.getenv(
+    "BACKUP_TARGET",
+    default="https://santander-customer-transaction-app-uat.onrender.com",
+)
+INFERENCE_ROUTE = "api/v1/classification/inference/uploadfile"
+API_ENDPOINT = urljoin(DEPLOYED_TARGET, INFERENCE_ROUTE)
 
 
 def call_api(file_contents, api_endpoint):
@@ -35,7 +43,7 @@ def call_api(file_contents, api_endpoint):
         files = {"data_file": ("filename", file_contents, "application/octet-stream")}
 
         # Make the API call
-        response = requests.post(api_endpoint, files=files)
+        response = requests.post(api_endpoint, files=files)  # Adjust timeout as needed
 
         # Check for successful response
         response.raise_for_status()
@@ -47,13 +55,38 @@ def call_api(file_contents, api_endpoint):
         return {"error": "API call failed"}
 
 
+def is_primary_api_responsive():
+    """
+    Check if the primary API endpoint is responsive.
+
+    Returns:
+    bool: True if responsive, False otherwise.
+    """
+    try:
+        response = requests.head(
+            DEPLOYED_TARGET, timeout=30
+        )  # Adjust timeout as needed
+        return response.status_code == 200
+    except requests.exceptions.RequestException:
+        return False
+
+
 def main():
     """
     Streamlit app for Santander Customer Transaction Inference.
 
     This function initializes the Streamlit app, handles file uploads, and triggers API calls based on user interactions.
     """
+    global API_ENDPOINT
+
     st.title("Santander Customer Transaction Inference App")
+
+    if not is_primary_api_responsive():
+        st.warning("Primary API endpoint not responsive. Rolling back to backup.")
+
+        # Use backup API endpoint
+        DEPLOYED_TARGET = BACKUP_TARGET
+        API_ENDPOINT = urljoin(DEPLOYED_TARGET, INFERENCE_ROUTE)
 
     # File upload
     uploaded_file = st.file_uploader(
@@ -69,13 +102,8 @@ def main():
             # Read file contents
             file_contents = uploaded_file.read()
 
-            # Get API endpoint from environment variable
-            inference_route = "api/v1/classification/inference/uploadfile"
-
-            api_endpoint = f"{BACKEND_HOST}/{inference_route}"
-
             # Call the API with the file contents
-            api_response = call_api(file_contents, api_endpoint)
+            api_response = call_api(file_contents, API_ENDPOINT)
 
             # Display API response
             st.write("API Response:")
