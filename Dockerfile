@@ -31,6 +31,9 @@ COPY ./staged/clf.pkl /app/staged/clf.pkl
 # Copy application server code
 COPY ./server /app/server
 
+# Copy the tests
+COPY ./tests /app/tests/
+
 # Check model hash
 RUN make checkmodelhash
 
