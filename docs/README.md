@@ -102,4 +102,19 @@ make clean
 make test
 ```
 
+# Deployed App
 
+* [__PROD API Server__](https://santander-customer-transaction-app.onrender.com/api/v1/docs)
+* [__UAT API Server__](https://santander-customer-transaction-app-uat.onrender.com/api/v1/docs)
+* [__Streamlit UI Application__](https://huggingface.co/spaces/SahilAhuja/santander-customer-transaction-app)
+
+
+# Glimpses
+
+[Deployed API Docs](api.png)
+
+[Expermentation Tracking](mlflow.png)
+
+[Monitoring](monitor.png)
+
+[User Interface](ui.png)
