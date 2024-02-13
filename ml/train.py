@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn import metrics
 import joblib
@@ -74,5 +75,46 @@ def train_and_evaluate():
         dispatcher.MLFLOW.get(MODEL).log_model(clf, MODEL)
 
 
+def train_and_predict():
+    """
+    Train the model for submission and deployment.
+    """
+    train_df = pd.read_csv(TRAINING_DATA)
+    test_df = pd.read_csv(TEST_DATA)
+
+    ytrain = train_df.target.values
+
+    train_df = train_df.drop(["ID_code", "target", "kfold"], axis=1)
+
+    std_scalers = {}
+    for c in train_df.columns:
+        std_scaler = StandardScaler()
+        data = pd.concat([train_df[c], test_df[c]], ignore_index=True).to_frame()
+        std_scaler.fit(data)
+        train_df.loc[:, c] = std_scaler.transform(train_df[c].to_frame())
+        std_scalers[c] = std_scaler
+
+    # Data is ready to train
+    clf = dispatcher.MODELS[MODEL]
+    clf.fit(train_df, ytrain)
+
+    # Save standard scalers, model, and columns for later use
+    joblib.dump(std_scalers, f"models/{MODEL}_std_scaler.pkl")
+    joblib.dump(clf, f"models/{MODEL}.pkl")
+    joblib.dump(train_df.columns, f"models/{MODEL}_columns.pkl")
+
+    # Generate predictions on test data
+    pred = clf.predict_proba(test_df[train_df.columns])[:, 1]
+    predictions = np.where(pred >= 0.5, 1, 0)
+    test_idx = test_df["ID_code"].values
+    sub = pd.DataFrame(
+        np.column_stack((test_idx, predictions)), columns=["ID_code", "target"]
+    )
+    sub.to_csv(f"models/{MODEL}_submission.csv", index=False)
+
+
 if __name__ == "__main__":
-    train_and_evaluate()
+    if FOLD == -1:
+        train_and_predict()
+    else:
+        train_and_evaluate()

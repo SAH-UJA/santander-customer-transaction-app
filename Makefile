@@ -68,27 +68,34 @@ mlflow: ## Run mlflow ui
 kfolds: ## Run kfolds split on raw data
 	python -m poetry run python -m ml.create_folds
 
-.PHONY: train
+.PHONY: traincv
 TRAINING_DATA ?= data/raw/train_folds.csv
 TEST_DATA ?= data/raw/test.csv
-MODEL = lightgbm
-train: ## Train classifier
+MODEL = 
+traincv: ## Train classifier with cross validation
 	FOLD=0 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m poetry run python -m ml.train
 	FOLD=1 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m poetry run python -m ml.train
 	FOLD=2 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m poetry run python -m ml.train
 	FOLD=3 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m poetry run python -m ml.train
 	FOLD=4 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m poetry run python -m ml.train
 
-.PHONY: predict
+.PHONY: predictcv
 TEST_DATA ?= data/raw/test.csv
 MODEL =
-predict: ## Run classifier on test set
+predictcv: ## Run classifier on test set using models generated via cross validation
 	MODEL=$(MODEL) TEST_DATA=$(TEST_DATA) python -m poetry run python -m ml.predict
+
+.PHONY: fulltrainpred
+TRAINING_DATA ?= data/raw/train.csv
+TEST_DATA ?= data/raw/test.csv
+MODEL = 
+fulltrainpred: ## Train classifier with full training dataset and predict target on test data
+	FOLD=-1 MODEL=$(MODEL) TRAINING_DATA=$(TRAINING_DATA) TEST_DATA=$(TEST_DATA) python -m poetry run python -m ml.train
 
 .PHONY: stagemodel
 MODEL =  
 stagemodel: ## Stage model for deployment
-	cp models/$(MODEL) staged/clf.pkl
+	cp models/$(MODEL).pkl staged/clf.pkl
 
 .PHONY: cleanmodels
 cleanmodels: ## Clean stashed models
