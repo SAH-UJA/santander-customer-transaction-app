@@ -71,12 +71,17 @@ make mlflow # This will launch mlflow tracking server
 ### Train the model 
 #### More models can be added in [ml/dispatcher.py] to use them with this interface
 ```bash
-make train MODEL=lightgbm # This will train lightgbm model on the data folds. Other model available is "randomforest"
+make traincv MODEL=lightgbm # This will train lightgbm model on the data folds. Other model available is "randomforest"
 ```
 
 ### Run the model on the test set
 ```bash
-make predict MODEL=lightgbm # This will run inference on the test set and generate the output as a submission.csv in models/ folder
+make predictcv MODEL=lightgbm # This will run inference on the test set and generate the output as a cv_<MODEL>_submission.csv in models/ folder using models generated using cross validation
+```
+
+### Build the model using full training set and predict on test data
+```bash
+make fulltrainpred MODEL=lightgbm # This will generate a model using full training dataset and run inference on the test set to output a <MODEL>_submission.csv in models/ folder.
 ```
 
 ### Stage the model for deployment
