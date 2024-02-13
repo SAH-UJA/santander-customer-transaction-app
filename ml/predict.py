@@ -54,6 +54,7 @@ def predict(test_data_path, model_type, model_path):
 
     # Average predictions across folds
     predictions /= 5
+    predictions = np.where(predictions >= 0.5, 1, 0)
 
     # Create a DataFrame with test IDs and predicted probabilities
     sub = pd.DataFrame(
@@ -72,4 +73,4 @@ if __name__ == "__main__":
     )
 
     # Save the submission file
-    submission.to_csv(f"models/{MODEL}_submission.csv", index=False)
+    submission.to_csv(f"models/cv_{MODEL}_submission.csv", index=False)
