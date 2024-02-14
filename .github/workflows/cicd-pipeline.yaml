@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-        lfs: true
+        # lfs: true
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -32,89 +32,89 @@ jobs:
     - name: Check model hash
       run: make checkmodelhash
   
-  feature_deploy:
-    name: DEV deploy
-    if: startsWith(github.ref, 'refs/heads/feature/')
-    needs: [build] 
-    runs-on: ubuntu-latest
+  # feature_deploy:
+  #   name: DEV deploy
+  #   if: startsWith(github.ref, 'refs/heads/feature/')
+  #   needs: [build] 
+  #   runs-on: ubuntu-latest
 
-    steps: 
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          lfs: true
+  #   steps: 
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+  #         lfs: true
       
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+  #     - name: Login to Docker Hub
+  #       uses: docker/login-action@v1
+  #       with:
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKER_PASSWORD }}
         
-      - name: Build Docker image
-        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
+  #     - name: Build Docker image
+  #       run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
 
-      - name: Push Docker image to Docker Hub
-        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
+  #     - name: Push Docker image to Docker Hub
+  #       run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=dev
     
-  develop_deploy:
-    name: UAT deploy
-    if: github.ref == 'refs/heads/develop'
-    needs: [build] 
-    runs-on: ubuntu-latest
+  # develop_deploy:
+  #   name: UAT deploy
+  #   if: github.ref == 'refs/heads/develop'
+  #   needs: [build] 
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          lfs: true
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+  #         lfs: true
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+  #     - name: Login to Docker Hub
+  #       uses: docker/login-action@v1
+  #       with:
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
-        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=uat
+  #     - name: Build Docker image
+  #       run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=uat
 
-      - name: Push Docker image to Docker Hub
-        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=uat
+  #     - name: Push Docker image to Docker Hub
+  #       run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=uat
 
-      - name: Deploy to Render.com
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.RENDER_SERVICE_ID_UAT }} 
-          api-key: ${{ secrets.RENDER_API_KEY }}
+  #     - name: Deploy to Render.com
+  #       uses: johnbeynon/render-deploy-action@v0.0.8
+  #       with:
+  #         service-id: ${{ secrets.RENDER_SERVICE_ID_UAT }} 
+  #         api-key: ${{ secrets.RENDER_API_KEY }}
     
-  release_deploy:
-    name: PROD deploy
-    if: startsWith(github.ref, 'refs/heads/release/')
-    needs: [build] 
-    runs-on: ubuntu-latest
+  # release_deploy:
+  #   name: PROD deploy
+  #   if: startsWith(github.ref, 'refs/heads/release/')
+  #   needs: [build] 
+  #   runs-on: ubuntu-latest
 
-    steps: 
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          lfs: true
+  #   steps: 
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+  #         lfs: true
       
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+  #     - name: Login to Docker Hub
+  #       uses: docker/login-action@v1
+  #       with:
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
-        run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=prod
+  #     - name: Build Docker image
+  #       run: make imgbuild DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=prod
 
-      - name: Push Docker image to Docker Hub
-        run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=prod
+  #     - name: Push Docker image to Docker Hub
+  #       run: make imgpush DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=prod
       
-      - name: Deploy to Render.com
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.RENDER_SERVICE_ID_PROD }} 
-          api-key: ${{ secrets.RENDER_API_KEY }}
+  #     - name: Deploy to Render.com
+  #       uses: johnbeynon/render-deploy-action@v0.0.8
+  #       with:
+  #         service-id: ${{ secrets.RENDER_SERVICE_ID_PROD }} 
+  #         api-key: ${{ secrets.RENDER_API_KEY }}
