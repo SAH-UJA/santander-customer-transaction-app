@@ -56,7 +56,7 @@ def train_and_evaluate():
     clf.fit(train_df, ytrain)
     preds = clf.predict_proba(valid_df)[:, 1]
     roc_auc = metrics.roc_auc_score(yvalid, preds)
-    print(roc_auc)
+    print(f"Validation Set AUC: {roc_auc}")
 
     # Save standard scalers, model, and columns for later use
     joblib.dump(std_scalers, f"models/{MODEL}_{FOLD}_std_scaler.pkl")
@@ -72,7 +72,7 @@ def train_and_evaluate():
         mlflow.log_metric("roc_auc", roc_auc)
 
         # Log model
-        dispatcher.MLFLOW.get(MODEL).log_model(clf, MODEL)
+        dispatcher.MLFLOW_MODULE.get(MODEL).log_model(clf, MODEL)
 
 
 def train_and_predict():
@@ -105,11 +105,8 @@ def train_and_predict():
 
     # Generate predictions on test data
     pred = clf.predict_proba(test_df[train_df.columns])[:, 1]
-    predictions = np.where(pred >= 0.5, 1, 0)
     test_idx = test_df["ID_code"].values
-    sub = pd.DataFrame(
-        np.column_stack((test_idx, predictions)), columns=["ID_code", "target"]
-    )
+    sub = pd.DataFrame(np.column_stack((test_idx, pred)), columns=["ID_code", "target"])
     sub.to_csv(f"models/{MODEL}_submission.csv", index=False)
 
 
