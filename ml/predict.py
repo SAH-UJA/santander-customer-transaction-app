@@ -54,7 +54,6 @@ def predict(test_data_path, model_type, model_path):
 
     # Average predictions across folds
     predictions /= 5
-    predictions = np.where(predictions >= 0.5, 1, 0)
 
     # Create a DataFrame with test IDs and predicted probabilities
     sub = pd.DataFrame(
